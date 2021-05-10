@@ -1,9 +1,39 @@
 const indexModule = (() => {
-  // 検索ボタンをクリックした時
-  document.getElementById('search-btn').addEventListener('click', () => {
-    return searchModule.searchUsers()
-  })
+  const path = window.location.pathname
 
-  // UsersモジュールのfetchAllUsersメソッドを呼び出す
-  return usersModule.fetchAllUsers()
+  switch (path) {
+    case '/':
+      // 検索ボタンをクリックした時
+      document.getElementById('search-btn').addEventListener('click', () => {
+        return searchModule.searchUsers()
+      })
+    
+      // UsersモジュールのfetchAllUsersメソッドを呼び出す
+      return usersModule.fetchAllUsers()
+    
+    case '/create.html':
+      document.getElementById('save-btn').addEventListener('click', () => {
+        return usersModule.createUser()
+      })
+      document.getElementById('cansel-btn').addEventListener('click', () => {
+        return window.location.href = '/'
+      })
+    case '/edit.html':
+      const uid = window.location.search.split('?uid=')[1]
+      document.getElementById('save-btn').addEventListener('click', () => {
+        return usersModule.saveUser(uid)
+      })
+      document.getElementById('cansel-btn').addEventListener('click', () => {
+        return window.location.href = '/'
+      })
+      document.getElementById('delete-btn').addEventListener('click', () => {
+        return usersModule.deleteUser(uid)
+      })
+
+      return usersModule.setExistingValue(uid)
+    
+    default:
+      break;
+  }
+
 })();
